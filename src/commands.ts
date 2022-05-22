@@ -1,6 +1,6 @@
 import { Routes } from 'discord-api-types/v10';
 import { REST } from '@discordjs/rest';
-import { Command } from './helpers/types';
+import { Command } from './utils/Types';
 import { Scry } from './actions/Scry/Scry';
 
 const commands: Map<string, Command> = new Map<string, Command>();

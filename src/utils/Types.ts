@@ -3,9 +3,7 @@ import { CacheType, CommandInteraction } from 'discord.js';
 
 export class Command {
   name: string;
-
   commandSchema: RESTPostAPIApplicationCommandsJSONBody;
-
   action: (interaction: CommandInteraction<CacheType>) => void;
 
   constructor(
@@ -21,7 +19,9 @@ export class Command {
   }
 }
 
-export interface GetCardResponse {
-  responseCode: number,
-
+export interface EmbeddedMessageData {
+  title: string,
+  url?: string,
+  image?: string,
+  footer: string,
 }

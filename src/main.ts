@@ -13,8 +13,6 @@ client.once('ready', async () => {
 });
 
 client.on('interactionCreate', async (interaction) => {
-  console.log(interaction);
-
   if (!interaction.isCommand()) return;
   const { commandName } = interaction;
   console.log(`Interaction command received: ${commandName} with options ${interaction.options}`);
@@ -23,7 +21,5 @@ client.on('interactionCreate', async (interaction) => {
     commands.get(commandName)?.action(interaction);
   }
 });
-
-// client.on('debug', (e) => console.log(e));
 
 client.login(BOT_TOKEN);
