@@ -11,9 +11,23 @@ For example, if player @Justin wanted to start a match against players @Nate and
 
 `/draft @Nate @Andrew`
 
+## Development Information
+### Requirements
+Node.JS > v17.5 (Fetch API Release)
+A Discord Developer Account and a Discord Application/Bot Created.
+
+### Running the package
+Setup: `npm install`
+
+Lint the package (ESLint): `npm test`
+
+Run the package: `npm start`
+
 
 
 ---
 
-### This project is bootstrapped from the tutorial by sabe.io, linked below:
+### This project is bootstrapped a few tutorials, linked below:
+https://discordjs.guide/#before-you-begin
+
 https://sabe.io/tutorials/how-to-build-discord-bot-typescript#initialize-project

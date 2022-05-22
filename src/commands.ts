@@ -1,14 +1,23 @@
-import { RESTPostAPIApplicationCommandsJSONBody, Routes } from 'discord-api-types/v10';
+import { Routes } from 'discord-api-types/v10';
 import { REST } from '@discordjs/rest';
+import { Command } from './helpers/types';
+import { Scry } from './actions/Scry/Scry';
 
-import { scry } from './actions/Scry/Scry';
+const commands: Map<string, Command> = new Map<string, Command>();
+commands.set(Scry.name, Scry);
 
-export const commands: RESTPostAPIApplicationCommandsJSONBody[] = [
-  scry,
-];
+const commandKeys = Array.from(commands.keys());
 
-export const refreshCommands = async (clientId: string, restClient: REST) => {
-  await restClient.put(Routes.applicationCommands(clientId), { body: commands })
+const refreshCommands = async (clientId: string, restClient: REST) => {
+  const schemas = Array.from(commands.values()).map((command) => command.commandSchema);
+
+  await restClient.put(Routes.applicationCommands(clientId), { body: schemas })
     .then(() => console.log('Successfully registered application commands.'))
     .catch(console.error);
+};
+
+export {
+  commands,
+  commandKeys,
+  refreshCommands,
 };
