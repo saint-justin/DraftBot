@@ -12,6 +12,8 @@ For example, if player @Justin wanted to start a match against players @Nate and
 
 `/draft @Nate @Andrew`
 
+
+--- 
 ### Scry
 This command looks up any given existing Magic: The Gathering card documented in the scryfall API. It returns a single card of the exact card is found, or it returns a list of possible cards of multiple cards are returned from the search.
 
