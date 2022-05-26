@@ -7,8 +7,7 @@ import { PLUG } from './Constants';
 const generateMessage = () => new MessageEmbed().setColor('#EC9192');
 
 const tooManyCardsMessage = (searchJson: ScryfallSearchObject) => generateMessage()
-  .setTitle('Search Error: Multiple Cards Found')
-  .addField('Options', searchJson.data.map((card) => card.name).join('\n'));
+  .addField('Multiple Cards Found', searchJson.data.map((card) => card.name).join('\n'));
 
 const cardFoundMessage = (card: ScryfallCard) => generateMessage()
   .setTitle(card.name)
