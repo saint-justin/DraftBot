@@ -19,7 +19,15 @@ This command looks up any given existing Magic: The Gathering card documented in
 
 For example, if a player wanted to find the card Ayula, Queen Among Bears they would run the folowing command:
 
-`/scry Ayula, Queen Among Bears`
+`/scry Ayula, Queen`
+```
+Ayula, Queen Among Bears
+
+Legendary Creature — Bear  [2/2]
+Whenever another Bear enters the battlefield under your control, choose one —
+• Put two +1/+1 counters on target Bear.
+• Target Bear you control fights target creature you don't control.
+```
 
 As a result of how many Magic cards there are, there's a chance that multiple cards may be found with the text a player runs. If a player were trying to pull up a specific Omnath but only ran the following command, they'll instead get a list of the cards with similar names.
 
