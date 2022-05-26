@@ -1,18 +1,23 @@
-import { MessageEmbed } from "discord.js";
-import { EmbeddedMessageData } from "./Types";
+/* eslint max-len: 0 */
 
-const generateEmbeddedMessage = (messageData: EmbeddedMessageData) => {
-  const msg = new MessageEmbed();
+import { MessageEmbed } from 'discord.js';
+import { ScryfallCard, ScryfallSearchObject } from './ScryfallTypes';
+import { PLUG } from './Constants';
 
-  // Required info
-  msg.setColor('#EC9192').setTitle(messageData.title);
+const generateMessage = () => new MessageEmbed().setColor('#EC9192');
 
-  // Optional info
-  if (messageData.url) msg.setURL(messageData.url);
-  if (messageData.image) msg.setImage(messageData.image);
+const tooManyCardsMessage = (searchJson: ScryfallSearchObject) => generateMessage()
+  .setTitle('Search Error: Multiple Cards Found')
+  .addField('Options', searchJson.data.map((card) => card.name).join('\n'));
 
-  // Dev footer
-  msg.setFooter({ text: 'Bot Developed by Justin Vaughn' })
+const cardFoundMessage = (card: ScryfallCard) => generateMessage()
+  .setTitle(card.name)
+  .setURL(card.uri)
+  .addField(`${card.type_line}  [${card.power}/${card.toughness}]`, `${card.oracle_text}${PLUG}`)
+  .setThumbnail(card.image_uris.large);
 
-  return msg;
-};
+export const errorResponse = (errorMessage: string) => ({ content: errorMessage, ephemeral: true });
+
+export const tooManyCardsResponse = (searchJson: ScryfallSearchObject) => ({ embeds: [tooManyCardsMessage(searchJson)], ephemeral: true });
+
+export const cardFoundResponse = (card: ScryfallCard) => ({ embeds: [cardFoundMessage(card)], ephemeral: true });

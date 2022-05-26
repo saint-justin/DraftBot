@@ -1,12 +1,13 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
-import { 
-  CacheType, 
-  CommandInteraction, 
-  MessageEmbed 
-} from 'discord.js';
+import { CacheType, CommandInteraction } from 'discord.js';
+import { ScryfallSearchObject } from 'src/utils/ScryfallTypes';
 import { Command } from '../../utils/Types';
 import { getSearchRequest } from './ScryfallWrapper';
-import { ScryfallSearchObject } from 'src/utils/ScryfallTypes';
+import {
+  errorResponse,
+  tooManyCardsResponse,
+  cardFoundResponse,
+} from '../../utils/MessageBuilder';
 
 const name = 'scry';
 
@@ -19,43 +20,40 @@ const commandSchema = new SlashCommandBuilder()
   .toJSON();
 
 const action = async (interaction: CommandInteraction<CacheType>) => {
-  console.log('Scry action called!');
   const requestedCard = interaction.options.getString('card-name');
   if (requestedCard === null) {
-    console.log('Error: No card requested!');
+    interaction.reply(errorResponse('Error: No card included'))
+      .then(() => console.log('Response successfully sent.'))
+      .catch(console.error);
     return;
   }
 
   const searchResponse = await getSearchRequest(requestedCard);
   const searchJson: ScryfallSearchObject = await searchResponse.json();
-  
+
   if (searchResponse.status !== 200) {
-    interaction.reply({ content: `I'm sorry, I'm having trouble finding any cards like '${requestedCard}'`, ephemeral: true })
+    interaction.reply(errorResponse(`I'm sorry, I'm having trouble finding any cards like '${requestedCard}'`))
       .then(() => console.log('Response successfully sent.'))
       .catch(console.error);
     return;
   }
 
-  const msg = new MessageEmbed().setColor('#EC9192');
-  
+  const responseNames = searchJson.data.map((card) => card.name.toLocaleLowerCase());
+  if (responseNames.includes(requestedCard.toLocaleLowerCase())) {
+    searchJson.data = searchJson.data.filter((card) => card.name === requestedCard);
+  }
+
+  if (searchJson.data.length === 1) {
+    interaction.reply(cardFoundResponse(searchJson.data[0]))
+      .then(() => console.log('Response successfully sent.'))
+      .catch(console.error);
+  }
+
   if (searchJson.data.length > 1) {
-    msg.setTitle('Search Error: Multiple Cards Found');
-    msg.addField('Options', searchJson.data.map(card => card.name).join('\n'));
-    interaction.reply({ embeds: [msg], ephemeral: true })
+    interaction.reply(tooManyCardsResponse(searchJson))
       .then(() => console.log('Response successfully sent.'))
       .catch(console.error);
-    return;
   }
-
-  const card = searchJson.data[0];
-  msg.setImage(card.image_uris.large);
-  msg.setTitle(card.name);
-  msg.setDescription(card.oracle_text);
-  msg.setFooter({ text: 'Bot developed by Justin Vaughn' });
-
-  interaction.reply({ embeds: [msg], ephemeral: true })
-    .then(() => console.log('Response successfully sent.'))
-    .catch(console.error);
 };
 
 export const Scry = new Command(name, commandSchema, action);
