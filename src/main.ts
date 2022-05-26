@@ -23,7 +23,7 @@ client.once('ready', async () => {
 client.on('interactionCreate', async (interaction: Interaction) => {
   if (!interaction.isCommand()) return;
   const { commandName } = interaction;
-  console.log(`Interaction command received: ${commandName} with options ${interaction.options}`);
+  console.log(`Interaction command received: ${commandName}`);
 
   if (commandKeys.includes(commandName)) {
     commands.get(commandName)?.action(interaction);
