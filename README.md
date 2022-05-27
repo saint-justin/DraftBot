@@ -5,7 +5,7 @@ DraftBot is a simple bot for playing a game of Draft over Discord. DraftBot also
 ### Draft
 This command starts a new draft with the players who are mentioned in the command. The individual who runs the command will _always_ be included in the draft as the 1st player.
 
-#### Request
+#### Request [TODO]
 `/draft <player-2> <player-3>`
 
 For example, if player @Justin wanted to start a match against players @Nate and @Andrew, they would run the following command:
