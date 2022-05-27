@@ -1,5 +1,5 @@
 import { RESTPostAPIApplicationCommandsJSONBody } from 'discord-api-types/v10';
-import { CacheType, CommandInteraction } from 'discord.js';
+import { CacheType, CommandInteraction, MessageEmbed } from 'discord.js';
 
 export class Command {
   name: string;
@@ -26,4 +26,10 @@ export interface EmbeddedMessageData {
   url?: string,
   image?: string,
   footer: string,
+}
+
+export interface MessageResponse {
+  embeds?: MessageEmbed[],
+  content?: string,
+  ephemeral?: boolean,
 }
