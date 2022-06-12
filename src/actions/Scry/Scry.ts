@@ -56,4 +56,4 @@ const action = async (interaction: CommandInteraction<CacheType>) => {
   }
 };
 
-export const Scry = new Command(name, commandSchema, action);
+export default new Command(name, commandSchema, action);
