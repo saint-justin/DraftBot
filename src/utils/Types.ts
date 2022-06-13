@@ -33,3 +33,17 @@ export interface MessageResponse {
   content?: string,
   ephemeral?: boolean,
 }
+
+interface BaseSchema {
+  name: string,
+  description: string,
+}
+
+export interface CommandSchema extends BaseSchema {
+  stringOptions?: OptionSchema[],
+  userOptions?: OptionSchema[],
+}
+
+export interface OptionSchema extends BaseSchema {
+  required?: boolean, 
+}

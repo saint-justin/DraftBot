@@ -1,24 +1,27 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
+import { BuildCommandSchema } from '../../utils/SchemaBuilder';
 import { CacheType, CommandInteraction } from 'discord.js';
 import { ScryfallSearchObject } from 'src/utils/ScryfallTypes';
 import { Command } from '../../utils/Types';
 import { getSearchRequest } from './ScryfallWrapper';
 import {
-  placeholder,
   errorResponse,
   tooManyCardsResponse,
-  replyWithCard,
+  cardFoundResponse,
 } from '../../utils/MessageBuilder';
 
 const name = 'scry';
 
-const commandSchema = new SlashCommandBuilder()
-  .setName('scry')
-  .setDescription('Searches for a card you look up')
-  .addStringOption((option) => option.setName('card-name')
-    .setDescription('The cards name')
-    .setRequired(true))
-  .toJSON();
+const commandSchema = BuildCommandSchema({
+  name: 'scry',
+  description: 'Searches for the card by the name you give',
+  stringOptions: [{
+    name: 'card-name',
+    description: 'The cards name',
+    required: true,
+  }]
+});
+
 
 const action = async (interaction: CommandInteraction<CacheType>) => {
   const requestedCard = interaction.options.getString('card-name');
@@ -29,16 +32,11 @@ const action = async (interaction: CommandInteraction<CacheType>) => {
     return;
   }
 
-  console.log(`Scrying for card: ${requestedCard}`);
-
-  interaction.reply(placeholder(`Looking for card \`${requestedCard}\`...`))
-    .catch(console.error);
-
   const searchResponse = await getSearchRequest(requestedCard);
   const searchJson: ScryfallSearchObject = await searchResponse.json();
 
   if (searchResponse.status !== 200) {
-    interaction.editReply(errorResponse(`I'm sorry, I'm having trouble finding any cards like '${requestedCard}'`))
+    interaction.reply(errorResponse(`I'm sorry, I'm having trouble finding any cards like '${requestedCard}'`))
       .then(() => console.log('Response successfully sent.'))
       .catch(console.error);
     return;
@@ -49,10 +47,16 @@ const action = async (interaction: CommandInteraction<CacheType>) => {
     searchJson.data = searchJson.data.filter((card) => card.name === requestedCard);
   }
 
-  if (searchJson.data.length !== 1) {
-    interaction.editReply(tooManyCardsResponse(searchJson));
-  } else {
-    replyWithCard(searchJson.data[0], interaction);
+  if (searchJson.data.length === 1) {
+    interaction.reply(cardFoundResponse(searchJson.data[0]))
+      .then(() => console.log('Response successfully sent.'))
+      .catch(console.error);
+  }
+
+  if (searchJson.data.length > 1) {
+    interaction.reply(tooManyCardsResponse(searchJson))
+      .then(() => console.log('Response successfully sent.'))
+      .catch(console.error);
   }
 };
 
