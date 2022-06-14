@@ -47,3 +47,11 @@ export interface CommandSchema extends BaseSchema {
 export interface OptionSchema extends BaseSchema {
   required?: boolean, 
 }
+
+export interface Draft {
+  draftId: string,
+  draftSets: string[],
+  players: string[],
+  draftRound: number,
+  startTime: number,
+}

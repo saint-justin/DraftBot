@@ -17,26 +17,17 @@ const commandSchema = BuildCommandSchema({
     }))
   })
 
-  // .setName('draft') // A dependency throw an err if you try to use just use the name var here
-  // .setDescription('Start a draft with up to four players')
-  // .addStringOption((option) => option.setName('players')
-  //   .setDescription('The @s of all players to include')
-  //   .setRequired(true))
-  // .toJSON();
-
-  // console.log(commandSchema);
-
 const action = async (interaction: CommandInteraction<CacheType>) => {
   interaction.reply("Draft called!");
-  console.log(interaction.command);
+  // console.log(interaction.command);
 
   const players = [
     interaction.options.getUser('player-1'),
     interaction.options.getUser('player-2'),
     interaction.options.getUser('player-3'),
     interaction.options.getUser('player-4')
-  ]
-  console.log(interaction.options);
+  ].filter((player) => !!player);
+  // console.log(interaction.options);
   console.log(players);
 };
 
