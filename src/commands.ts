@@ -1,12 +1,14 @@
 import { Routes } from 'discord-api-types/v10';
 import { REST } from '@discordjs/rest';
-import { Command } from './utils/Types';
+import { AbstractCommand } from './utils/Command';
 import Scry from './actions/Scry';
 import Draft from './actions/Draft';
 
-const commands: Map<string, Command> = new Map<string, Command>();
-commands.set(Scry.name, Scry);
-commands.set(Draft.name, Draft);
+const commands: Map<string, AbstractCommand> = new Map<string, AbstractCommand>();
+const scryCommand = new Scry();
+const draftCommand = new Draft();
+commands.set(scryCommand.name, scryCommand);
+commands.set(draftCommand.name, draftCommand);
 
 const commandKeys = Array.from(commands.keys());
 
