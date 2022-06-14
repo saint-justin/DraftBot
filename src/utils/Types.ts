@@ -1,6 +1,5 @@
 import { MessageEmbed } from 'discord.js';
 
-
 export interface EmbeddedMessageData {
   title: string,
   url?: string,
@@ -25,13 +24,19 @@ export interface CommandSchema extends BaseSchema {
 }
 
 export interface OptionSchema extends BaseSchema {
-  required?: boolean, 
+  required?: boolean,
 }
 
 export interface Draft {
   draftId: string,
   draftSets: string[],
-  players: string[],
   draftRound: number,
+  players: string[],
   startTime: number,
+  packs: Pack[],
+}
+
+export interface Pack {
+  cardsRemaining: [],
+  cardsPulled: [],
 }

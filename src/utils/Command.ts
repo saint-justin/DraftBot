@@ -3,7 +3,9 @@ import { CacheType, CommandInteraction } from 'discord.js';
 
 export class Command implements AbstractCommand {
   name: string;
+
   commandSchema: RESTPostAPIApplicationCommandsJSONBody;
+
   action: (interaction: CommandInteraction<CacheType>) => void;
 
   constructor(
