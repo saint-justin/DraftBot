@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid';
 import { getSetRequest } from '../../utils/wrappers/ScryfallWrapper';
 import { BuildCommandSchema } from '../../utils/SchemaBuilder';
 import { AbstractCommand } from '../../utils/Command';
-import { DRAFT_TABLE_PREFIX, STAGES, TABLES } from '../../utils/Constants';
+import { DRAFT_TABLE_PREFIX, STAGES, DYNAMO_TABLE } from '../../utils/Constants';
 import DynamoWrapper from '../../utils/wrappers/DynamoWrapper';
 
 const getSetData = async (setTag: string) => {
@@ -22,7 +22,7 @@ export default class Draft implements AbstractCommand {
   dynamo: DynamoWrapper;
 
   constructor() {
-    this.dynamo = new DynamoWrapper('us-west-1', TABLES.DRAFTS_BETA);
+    this.dynamo = new DynamoWrapper('us-west-1', DYNAMO_TABLE.DRAFTS_BETA);
   }
 
   commandSchema = BuildCommandSchema({

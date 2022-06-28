@@ -1,7 +1,7 @@
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DynamoDBClient, Put } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocument, PutCommand } from '@aws-sdk/lib-dynamodb';
 import { DYNAMO_TABLE, STAGES } from '../Constants';
-import { Draft, SetData } from '../Types';
+import { CardsByRarity, CardsByRarityCondensed, Draft, SetData } from '../Types';
 
 // TODO: Singleton?
 export default class DynamoWrapper {
@@ -29,7 +29,18 @@ export default class DynamoWrapper {
     }
   }
 
-  public async writeSets(sets: SetData[]) {
-
+  public async writeSet(set: CardsByRarityCondensed) {
+    try {
+      await this.dynamoDoc.send(
+        new PutCommand({
+          TableName: this.tableName,
+          Item: {...set}
+        })
+      )
+      console.log('Write successful!')
+    }
+    catch (e) {
+      console.log('Error!', e);
+    }
   }
 }

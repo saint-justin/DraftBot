@@ -50,10 +50,19 @@ export interface SetData {
 }
 
 export interface CardsByRarity {
-  common: string[] | string,
-  uncommon: string[] | string,
-  rare: string[] | string,
-  mythic: string[] | string,
+  setId: string,
+  common: string[],
+  uncommon: string[],
+  rare: string[],
+  mythic: string[],
+}
+
+export interface CardsByRarityCondensed {
+  setId: string,
+  common: string,
+  uncommon: string,
+  rare: string,
+  mythic: string,
 }
 
 // export interface CardData {

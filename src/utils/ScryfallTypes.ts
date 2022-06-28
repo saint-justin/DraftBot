@@ -147,3 +147,11 @@ export interface ScryfallSetObject {
   foil_only: boolean;
   icon_svg_uri: string;
 }
+
+export interface ScryfallSetCardRequest {
+  object: string;
+  total_cards: number;
+  has_more: boolean;
+  next_page: string;
+  data: ScryfallCard[];
+}

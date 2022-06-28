@@ -7,7 +7,7 @@ export const SCRYFALL_ENDPOINT_SETS: string = '/sets/';
 export const DRAFTABLE_SET_TYPES: string[] = ['core', 'expansion', 'masters', 'draft_innovation'];
 export const PLUG: string = '\n\nDraftBot is completely [open source](https://github.com/saint-justin/DraftBot), contribute now!';
 
-export const REGION: string = 'us-west-1';
+export const DEFAULT_REGION: string = 'us-west-1';
 export const DRAFT_TABLE_PREFIX: string = 'draftbot-drafts';
 
 export enum DYNAMO_TABLE {
