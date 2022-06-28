@@ -3,8 +3,18 @@ import { v4 as uuid } from 'uuid';
 import { getSetRequest } from '../../utils/wrappers/ScryfallWrapper';
 import { BuildCommandSchema } from '../../utils/SchemaBuilder';
 import { AbstractCommand } from '../../utils/Command';
-import { DRAFT_TABLE_PREFIX, STAGES } from '../../utils/Constants';
+import { DRAFT_TABLE_PREFIX, STAGES, TABLES } from '../../utils/Constants';
 import DynamoWrapper from '../../utils/wrappers/DynamoWrapper';
+
+const getSetData = async (setTag: string) => {
+  const setRequest = await getSetRequest(setTag);
+  if (setRequest.status !== 200) {
+    console.log(`Set ${setTag} invalid!`);
+    return;
+  }
+
+  return await setRequest.json();
+};
 
 export default class Draft implements AbstractCommand {
   name = 'draft';
@@ -12,7 +22,7 @@ export default class Draft implements AbstractCommand {
   dynamo: DynamoWrapper;
 
   constructor() {
-    this.dynamo = new DynamoWrapper('us-west-1', `${DRAFT_TABLE_PREFIX}-${STAGES.BETA}`);
+    this.dynamo = new DynamoWrapper('us-west-1', TABLES.DRAFTS_BETA);
   }
 
   commandSchema = BuildCommandSchema({
@@ -29,16 +39,6 @@ export default class Draft implements AbstractCommand {
     }],
   });
 
-  getSetData = async (setTag: string) => {
-    const setRequest = await getSetRequest(setTag);
-    if (setRequest.status !== 200) {
-      console.log(`Set ${setTag} invalid!`);
-      return;
-    }
-
-    return await setRequest.json();
-  }
-
   action = async (interaction: CommandInteraction<CacheType>) => {
     interaction.reply('Draft called!');
 
@@ -53,12 +53,10 @@ export default class Draft implements AbstractCommand {
 
     // TODO: Add player validation (and accounts stats?)
     // TODO: Add set validation
-    const setData = draftSets?.map(setTag => this.getSetData(setTag));
+    const setData = draftSets?.map((setTag) => getSetData(setTag.toUpperCase()));
     await Promise.all(setData!);
-    
-    setData?.forEach(set => console.log(set));
 
-
+    setData?.forEach((set) => console.log(set));
 
     if (draftSets === undefined) {
       interaction.reply('Sorry, that\'s not a set that I recognize.');

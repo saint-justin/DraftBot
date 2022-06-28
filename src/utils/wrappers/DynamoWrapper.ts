@@ -1,6 +1,7 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocument, PutCommand } from '@aws-sdk/lib-dynamodb';
-import { Draft } from '../Types';
+import { DYNAMO_TABLE, STAGES } from '../Constants';
+import { Draft, SetData } from '../Types';
 
 // TODO: Singleton?
 export default class DynamoWrapper {
@@ -14,11 +15,11 @@ export default class DynamoWrapper {
     this.tableName = tableName;
   }
 
-  public async createDraft(draftInfo: Draft): Promise<void> {
+  public async createDraft(draftInfo:Draft, stage:STAGES = STAGES.BETA): Promise<void> {
     try {
       await this.dynamoDoc.send(
         new PutCommand({
-          TableName: this.tableName,
+          TableName: stage === STAGES.BETA ? DYNAMO_TABLE.DRAFTS_BETA : DYNAMO_TABLE.DRAFTS_PROD,
           Item: { ...draftInfo },
         }),
       );
@@ -26,5 +27,9 @@ export default class DynamoWrapper {
     } catch (e) {
       console.log('Error!', e);
     }
+  }
+
+  public async writeSets(sets: SetData[]) {
+
   }
 }
