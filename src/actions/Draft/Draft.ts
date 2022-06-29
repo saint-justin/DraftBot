@@ -3,17 +3,17 @@ import { v4 as uuid } from 'uuid';
 import { getSetRequest } from '../../utils/wrappers/ScryfallWrapper';
 import { BuildCommandSchema } from '../../utils/SchemaBuilder';
 import { AbstractCommand } from '../../utils/Command';
-import { DRAFT_TABLE_PREFIX, STAGES, DYNAMO_TABLE } from '../../utils/Constants';
+import { DYNAMO_TABLE } from '../../utils/Constants';
 import DynamoWrapper from '../../utils/wrappers/DynamoWrapper';
 
-const getSetData = async (setTag: string) => {
+const getSetData = async (setTag: string): Promise<any> => {
   const setRequest = await getSetRequest(setTag);
   if (setRequest.status !== 200) {
     console.log(`Set ${setTag} invalid!`);
-    return;
+    return undefined;
   }
 
-  return await setRequest.json();
+  return setRequest.json();
 };
 
 export default class Draft implements AbstractCommand {
@@ -51,7 +51,7 @@ export default class Draft implements AbstractCommand {
 
     const draftSets = interaction.options.getString('draft-sets')?.split(' ').filter((set) => set !== undefined);
 
-    // TODO: Add player validation (and accounts stats?)
+    // TODO: Add player validation (and accounts?)
     // TODO: Add set validation
     const setData = draftSets?.map((setTag) => getSetData(setTag.toUpperCase()));
     await Promise.all(setData!);

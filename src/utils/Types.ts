@@ -1,4 +1,5 @@
 import { MessageEmbed } from 'discord.js';
+import { ScryfallCard, ScryfallSetObject } from './ScryfallTypes';
 
 export interface EmbeddedMessageData {
   title: string,
@@ -50,11 +51,11 @@ export interface SetData {
 }
 
 export interface CardsByRarity {
-  setId: string,
-  common: string[],
-  uncommon: string[],
-  rare: string[],
-  mythic: string[],
+  setData: ScryfallSetObject | undefined,
+  common: ScryfallCard[],
+  uncommon: ScryfallCard[],
+  rare: ScryfallCard[],
+  mythic: ScryfallCard[],
 }
 
 export interface CardsByRarityCondensed {

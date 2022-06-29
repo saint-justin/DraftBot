@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/naming-convention */
+
 export const SCRYFALL_URL: string = 'https://api.scryfall.com';
 export const SCRYFALL_ENDPOINT_GETCARD: string = '/cards/named?cards/named?fuzzy=';
 export const SCRYFALL_ENDPOINT_GETGUESSES: string = '/cards/autocomplete?q=';
