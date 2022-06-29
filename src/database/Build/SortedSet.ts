@@ -30,8 +30,7 @@ class SortedSet {
         this.cardsByRarity.mythic.push(card);
         break;
       default:
-        console.error('Error: Unknown card type');
-        console.error(card);
+        console.error(`Error: Unknown card type: ${card.name} [${card.id}]`);
     }
   };
 
@@ -50,12 +49,22 @@ class SortedSet {
       return null;
     }
 
+    const commons = SortedSet.getUniqueIds(this.cardsByRarity.common).join(',');
+    const uncommons = SortedSet.getUniqueIds(this.cardsByRarity.uncommon).join(',');
+    const rares = SortedSet.getUniqueIds(this.cardsByRarity.rare).join(',');
+    const mythics = SortedSet.getUniqueIds(this.cardsByRarity.mythic).join(',');
+
+    if (!commons || !uncommons || !rares || !mythics) {
+      console.error(`Error: Null fields found for set ${this.cardsByRarity.setData.name} [${this.cardsByRarity.setData.id}]`)
+      return null;
+    }
+
     return {
       setId: this.cardsByRarity.setData.id!,
-      common: SortedSet.getUniqueIds(this.cardsByRarity.common).join(','),
-      uncommon: SortedSet.getUniqueIds(this.cardsByRarity.uncommon).join(','),
-      rare: SortedSet.getUniqueIds(this.cardsByRarity.rare).join(','),
-      mythic: SortedSet.getUniqueIds(this.cardsByRarity.mythic).join(','),
+      common: commons,
+      uncommon: uncommons,
+      rare: rares,
+      mythic: mythics,
     };
   };
 

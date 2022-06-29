@@ -10,7 +10,7 @@ import DynamoWrapper from '../../utils/wrappers/DynamoWrapper';
 import SortedSet from './SortedSet';
 
 const scryfallLimiter = new RateLimiter({ tokensPerInterval: 10, interval: 'second' });
-const dynamoLimiter = new RateLimiter({ tokensPerInterval: 1, interval: 'second' });
+const dynamoLimiter = new RateLimiter({ tokensPerInterval: 10, interval: 'minute' });
 
 const getCardIdsByRarityForSet = async (setData:ScryfallSetObject): Promise<SortedSet> => {
   let request = await fetch(setData.search_uri);
@@ -27,7 +27,6 @@ const getCardIdsByRarityForSet = async (setData:ScryfallSetObject): Promise<Sort
     response.data.forEach((card) => sortedSet.sortCard(card));
   }
   /* eslint-enable no-await-in-loop */
-
   return sortedSet;
 };
 
@@ -46,16 +45,19 @@ const buildDynamoTablesForSets = async (setTypes: string[]) => {
   console.log(`Sets after trimming: ${minimizedSets.length}\n`);
 
   const dynamo = new DynamoWrapper(DEFAULT_REGION, DYNAMO_TABLE.SETS_BETA);
-  const cardsByRarity = await getCardIdsByRarityForSet(minimizedSets[0]);
 
-  await dynamoLimiter.removeTokens(1); // Self-limit dynamo to try and stay in free tier
-
-  const condensedData = cardsByRarity.getCondensed();
-  if (!condensedData) {
-    console.log(`Error in retrieving condensed data for set ${cardsByRarity.getId()}`);
-    return;
-  }
-  dynamo.writeSet(condensedData);
+  minimizedSets.forEach(async set => {
+    // Self-limit dynamo to stay in free tier
+    await dynamoLimiter.removeTokens(1); 
+    const cardsByRarity = await getCardIdsByRarityForSet(set);
+    const condensedData = cardsByRarity.getCondensed();
+    if (!condensedData) {
+      console.log(`Error in retrieving condensed data for set ${cardsByRarity.getId()}`);
+      return;
+    }
+    await dynamo.writeSet(condensedData);
+    console.log(`Set successfully written for set: ${set.name}`)
+  })
 };
 
 buildDynamoTablesForSets(DRAFTABLE_SET_TYPES);
