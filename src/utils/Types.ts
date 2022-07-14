@@ -60,29 +60,9 @@ export interface CardsByRarity {
 
 export interface CardsByRarityCondensed {
   setId: string,
+  setName: string,
   common: string,
   uncommon: string,
   rare: string,
   mythic: string,
 }
-
-// export interface CardData {
-//   object: string;
-//   id: string;
-//   oracle_id: string;
-//   name: string;
-//   uri: string;
-//   scryfall_uri: string;
-//   layout: string;
-//   png_uri: string;
-//   mana_cost: string;
-//   cmc: number;
-//   type_line: string;
-//   oracle_text: string;
-//   power: string;
-//   toughness: string;
-//   set_id: string;
-//   set: string;
-//   rarity: string;
-//   flavor_text: string;
-// }

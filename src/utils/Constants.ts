@@ -5,6 +5,7 @@ export const SCRYFALL_ENDPOINT_GETCARD: string = '/cards/named?cards/named?fuzzy
 export const SCRYFALL_ENDPOINT_GETGUESSES: string = '/cards/autocomplete?q=';
 export const SCRYFALL_ENDPOINT_SEARCH: string = '/cards/search?q=';
 export const SCRYFALL_ENDPOINT_SETS: string = '/sets/';
+export const SCRYFALL_URL_BULKCARDS: string = 'https://c2.scryfall.com/file/scryfall-bulk/default-cards/default-cards-20220714090449.json'
 
 export const DRAFTABLE_SET_TYPES: string[] = ['core', 'expansion', 'masters', 'draft_innovation'];
 export const PLUG: string = '\n\nDraftBot is completely [open source](https://github.com/saint-justin/DraftBot), contribute now!';
