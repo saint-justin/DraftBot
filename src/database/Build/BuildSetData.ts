@@ -39,10 +39,13 @@ const buildDynamoTablesForSets = async (setTypes: string[]) => {
     }
 
     const sortedSet = new SortedSet(set);
+    const skippedSets = [];
+
     bulkSetData.get(set.id)?.forEach(card => sortedSet.sortCard(card));
     const condensedData = sortedSet.getCondensed();
     if (!condensedData) {
       console.log(`  Error in retrieving condensed data for set ${sortedSet.getId()}`);
+      skippedSets.push(set.name);
       return;
     }   
     
@@ -50,6 +53,8 @@ const buildDynamoTablesForSets = async (setTypes: string[]) => {
     await dynamo.writeSet(condensedData);
     console.log(`Set successfully written for set: ${set.name}`)
   })
+
+  console.log('Full run completed!')
 };
 
 buildDynamoTablesForSets(DRAFTABLE_SET_TYPES);
