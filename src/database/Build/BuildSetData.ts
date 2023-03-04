@@ -5,7 +5,7 @@ import {
   DYNAMO_TABLE,
   DEFAULT_REGION,
 } from '../../utils/Constants';
-import { ScryfallCard, ScryfallSetCardRequest, ScryfallSetObject } from '../../utils/ScryfallTypes';
+import { ScryfallCard, ScryfallSetObject } from '../../utils/ScryfallTypes';
 import DynamoWrapper from '../../utils/wrappers/DynamoWrapper';
 import { getSetsBulk } from '../../utils/wrappers/ScryfallWrapper';
 import SortedSet from './SortedSet';
@@ -31,30 +31,30 @@ const buildDynamoTablesForSets = async (setTypes: string[]) => {
 
   const dynamo = new DynamoWrapper(DEFAULT_REGION, DYNAMO_TABLE.SETS_BETA);
   dynamoLimiter.removeTokens(6); // Clean all tokens from bucket for 1T/10S rate limiting
-  minimizedSets.forEach(async set => {
+  minimizedSets.forEach(async (set) => {
     // Self-limit dynamo to stay in free tier
     if (!bulkSetData.has(set.id)) {
-      console.error(`Set data not found for set with id: [${set.id}] `)
+      console.error(`Set data not found for set with id: [${set.id}] `);
       return;
     }
 
     const sortedSet = new SortedSet(set);
     const skippedSets = [];
 
-    bulkSetData.get(set.id)?.forEach(card => sortedSet.sortCard(card));
+    bulkSetData.get(set.id)?.forEach((card) => sortedSet.sortCard(card));
     const condensedData = sortedSet.getCondensed();
     if (!condensedData) {
       console.log(`  Error in retrieving condensed data for set ${sortedSet.getId()}`);
       skippedSets.push(set.name);
       return;
-    }   
-    
-    await dynamoLimiter.removeTokens(1); 
-    await dynamo.writeSet(condensedData);
-    console.log(`Set successfully written for set: ${set.name}`)
-  })
+    }
 
-  console.log('Full run completed!')
+    await dynamoLimiter.removeTokens(1);
+    await dynamo.writeSet(condensedData);
+    console.log(`Set successfully written for set: ${set.name}`);
+  });
+
+  console.log('Full run completed!');
 };
 
 buildDynamoTablesForSets(DRAFTABLE_SET_TYPES);

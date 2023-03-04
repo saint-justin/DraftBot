@@ -55,8 +55,8 @@ class SortedSet {
     const mythics = SortedSet.getUniqueIds(this.cardsByRarity.mythic).join(',');
 
     if (!commons || !uncommons || !rares) {
-      const check = (type: string): string => !!type ? '✔️' : '❌';
-      console.error(`Error: Null fields found for set ${this.cardsByRarity.setData.name} [${this.cardsByRarity.setData.id}]`)
+      const check = (type: string): string => (type ? '✔️' : '❌');
+      console.error(`Error: Null fields found for set ${this.cardsByRarity.setData.name} [${this.cardsByRarity.setData.id}]`);
       console.error(`  [ C: ${check(commons)}  U: ${check(uncommons)}  R: ${check(rares)}  M: ${check(mythics)} ]`);
       return null;
     }

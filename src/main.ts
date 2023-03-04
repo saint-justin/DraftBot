@@ -6,7 +6,7 @@ import { refreshCommands, commands, commandKeys } from './commands';
 import DynamoWrapper from './utils/wrappers/DynamoWrapper';
 import SecretsWrapper from './utils/wrappers/SecretsWrapper';
 
-// Check current node version on 
+// Check current node version on
 const nodeVersion = `${version.split('.')[0]}.${version.split('.')[1]}`;
 if (parseInt(nodeVersion, 10) < 17.5) {
   throw new Error('Node version out of date, node version >v17.5 required.');
@@ -29,9 +29,9 @@ const onReady = async (apiToken: string, applicationId: string) => {
 
   console.log(`List of actively registered commands: \n  [${commandKeys.join()}]`);
   await refreshCommands(applicationId, rest);
-  
+
   console.log('DraftBot is ready to go!');
-}
+};
 
 const onInteractionsCreate = async (interaction: Interaction) => {
   if (!interaction.isCommand()) return;
@@ -41,15 +41,15 @@ const onInteractionsCreate = async (interaction: Interaction) => {
   if (commandKeys.includes(commandName)) {
     commands.get(commandName)?.action(interaction);
   }
-}
+};
 
 const run = async () => {
   const botSecrets = await new SecretsWrapper().getBotSecret();
   const client = new Client({ intents: 1537 });
-  
+
   client.once('ready', () => onReady(botSecrets.api_token, botSecrets.application_id));
   client.on('interactionCreate', (interaction: Interaction) => onInteractionsCreate(interaction));
   client.login(botSecrets.api_token);
-}
+};
 
 run();

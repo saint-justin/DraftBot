@@ -6,7 +6,7 @@ import { AbstractCommand } from '../../utils/Command';
 import { DYNAMO_TABLE } from '../../utils/Constants';
 import DynamoWrapper from '../../utils/wrappers/DynamoWrapper';
 
-const getSetData = async (setTag: string): Promise<any> => {
+export const getSetData = async (setTag: string): Promise<any> => {
   const setRequest = await getSetRequest(setTag);
   if (setRequest.status !== 200) {
     console.log(`Set ${setTag} invalid!`);
