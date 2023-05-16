@@ -31,7 +31,7 @@ export default class Scry implements AbstractCommand {
       return;
     }
 
-    let placeholder = await interaction.deferReply({ephemeral: true });
+    let placeholder = await interaction.deferReply({});
 
     const searchResponse = await getSearchRequest(requestedCard);
     const searchJson: ScryfallSearchObject = await searchResponse.json();
@@ -39,7 +39,7 @@ export default class Scry implements AbstractCommand {
     if (searchResponse.status !== 200) {
       interaction.followUp(errorResponse(`I'm sorry, I'm having trouble finding any cards like '${requestedCard}'`))
         .then(() => placeholder)
-        .then(() => console.log('Response successfully sent.'))
+        .then(() => console.log('InvalidRequest response successfully sent.'))
         .catch(console.error);
       return;
     }
@@ -49,15 +49,19 @@ export default class Scry implements AbstractCommand {
       searchJson.data = searchJson.data.filter((card) => card.name === requestedCard);
     }
 
-    if (searchJson.data.length === 1) {
-      interaction.followUp(cardFoundResponse(searchJson.data[0]))
-        .then(() => console.log('Response successfully sent.'))
+    if (searchJson.data.length > 1) {
+      interaction.followUp(tooManyCardsResponse(searchJson))
+        .then(() => console.log('TooManyCards response successfully sent.'))
         .catch(console.error);
     }
 
-    if (searchJson.data.length > 1) {
-      interaction.followUp(tooManyCardsResponse(searchJson))
-        .then(() => console.log('Response successfully sent.'))
+    if (searchJson.data.length === 1) {
+      interaction.deleteReply()
+        .then(() => console.log('Placeholder deleted message successfully deleted'))
+        .catch(console.error);
+
+      interaction.channel?.send(cardFoundResponse(searchJson.data[0]))
+        .then(() => console.log('ValidRequest response successfully sent.'))
         .catch(console.error);
     }
   };

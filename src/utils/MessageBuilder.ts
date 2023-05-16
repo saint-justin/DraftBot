@@ -29,7 +29,7 @@ export const errorResponse = (errorMessage: string): MessageResponse => ({ conte
 
 export const tooManyCardsResponse = (searchJson: ScryfallSearchObject): MessageResponse => ({ embeds: [tooManyCardsMessage(searchJson)], ephemeral: true });
 
-export const cardFoundResponse = (card: ScryfallCard): MessageResponse => ({ embeds: [cardFoundMessage(card)], ephemeral: true });
+export const cardFoundResponse = (card: ScryfallCard): MessageResponse => ({ embeds: [cardFoundMessage(card)], ephemeral: false });
 
 export const replyWithCard = (card: ScryfallCard, interaction: CommandInteraction<CacheType>) => {
   if (interaction.channel === null) {
