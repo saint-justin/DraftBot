@@ -5,8 +5,8 @@ import { AbstractCommand } from '../../utils/Command';
 import { getSearchRequest } from '../../utils/wrappers/ScryfallWrapper';
 import {
   errorResponse,
-  tooManyCardsResponse,
   cardFoundResponse,
+  tooManyCardsResponse,
 } from '../../utils/MessageBuilder';
 
 export default class Scry implements AbstractCommand {
@@ -31,11 +31,14 @@ export default class Scry implements AbstractCommand {
       return;
     }
 
+    let placeholder = await interaction.deferReply({ephemeral: true });
+
     const searchResponse = await getSearchRequest(requestedCard);
     const searchJson: ScryfallSearchObject = await searchResponse.json();
 
     if (searchResponse.status !== 200) {
-      interaction.reply(errorResponse(`I'm sorry, I'm having trouble finding any cards like '${requestedCard}'`))
+      interaction.followUp(errorResponse(`I'm sorry, I'm having trouble finding any cards like '${requestedCard}'`))
+        .then(() => placeholder)
         .then(() => console.log('Response successfully sent.'))
         .catch(console.error);
       return;
@@ -47,13 +50,13 @@ export default class Scry implements AbstractCommand {
     }
 
     if (searchJson.data.length === 1) {
-      interaction.reply(cardFoundResponse(searchJson.data[0]))
+      interaction.followUp(cardFoundResponse(searchJson.data[0]))
         .then(() => console.log('Response successfully sent.'))
         .catch(console.error);
     }
 
     if (searchJson.data.length > 1) {
-      interaction.reply(tooManyCardsResponse(searchJson))
+      interaction.followUp(tooManyCardsResponse(searchJson))
         .then(() => console.log('Response successfully sent.'))
         .catch(console.error);
     }

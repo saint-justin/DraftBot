@@ -18,7 +18,6 @@ export const getSetData = async (setTag: string): Promise<any> => {
 
 export default class Draft implements AbstractCommand {
   name = 'draft';
-
   dynamo: DynamoWrapper;
 
   constructor() {

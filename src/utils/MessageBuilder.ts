@@ -10,7 +10,12 @@ import { MessageResponse } from './Types';
 const generateMessage = () => new MessageEmbed().setColor('#EC9192');
 
 const tooManyCardsMessage = (searchJson: ScryfallSearchObject) => generateMessage()
-  .addField('Multiple Cards Found', searchJson.data.slice(0, 15).map((card) => card.name).join('\n'));
+  .addField(
+    `${searchJson.data.length} Cards Found`, 
+    searchJson.data.length < 15 
+      ? searchJson.data.slice(0, 15).map((card) => card.name).join('\n')
+      : searchJson.data.slice(0, 15).map((card) => card.name).join('\n') + `\n...and ${searchJson.data.length - 15} more`
+  );
 
 const cardFoundMessage = (card: ScryfallCard) => generateMessage()
   .setTitle(card.name)

@@ -6,7 +6,6 @@ import { CardsByRarityCondensed, Draft } from '../Types';
 // TODO: Singleton?
 export default class DynamoWrapper {
   private dynamoDoc: DynamoDBDocument;
-
   private tableName: string;
 
   constructor(region:string = 'us-west-1', tableName:string = 'draftbot-drafts-beta') {
@@ -23,9 +22,9 @@ export default class DynamoWrapper {
           Item: { ...draftInfo },
         }),
       );
-      console.log('Success!');
+      console.log('Successfully created new draft');
     } catch (e) {
-      console.log('Error!', e);
+      console.log('Error in creating draft', e);
     }
   }
 
