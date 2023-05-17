@@ -17,6 +17,7 @@ if (parseInt(nodeVersion, 10) < 17.5) {
 const onReady = async (apiToken: string, applicationId: string) => {
   console.log('Creating dummy draft in current environment');
   const rest = new REST({ version: '10' }).setToken(apiToken);
+  
   const dynamoHelper = new DynamoWrapper('us-west-1', 'draftbot-drafts-beta');
   dynamoHelper.createDraft({
     draftId: uuid(),

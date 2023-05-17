@@ -32,7 +32,6 @@ export default class Scry implements AbstractCommand {
     }
 
     let placeholder = await interaction.deferReply({});
-
     const searchResponse = await getSearchRequest(requestedCard);
     const searchJson: ScryfallSearchObject = await searchResponse.json();
 

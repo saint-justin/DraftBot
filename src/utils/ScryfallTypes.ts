@@ -53,6 +53,21 @@ export interface PurchaseUris {
   cardhoarder: string;
 }
 
+export interface BulkDataObject {
+  object: string;
+  id: string;
+  type: string;
+  updated_at: Date;
+  uri: string;
+  name: string;
+  description: string;
+  size: number;
+  download_uri: string;
+  content_type: string;
+  content_encoding: string;
+}
+
+
 export interface ScryfallCard {
   object: string;
   id: string;
