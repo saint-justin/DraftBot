@@ -19,6 +19,9 @@ const onReady = async (apiToken: string, applicationId: string) => {
   const rest = new REST({ version: '10' }).setToken(apiToken);
   
   const dynamoHelper = new DynamoWrapper('us-west-1', 'draftbot-drafts-beta');
+
+  /* 
+  Test code
   dynamoHelper.createDraft({
     draftId: uuid(),
     draftSets: ['set1', 'set2', 'set3'],
@@ -27,6 +30,7 @@ const onReady = async (apiToken: string, applicationId: string) => {
     startTime: Date.now(),
     packs: [],
   });
+  */
 
   console.log(`List of actively registered commands: \n  [${commandKeys.join()}]`);
   await refreshCommands(applicationId, rest);

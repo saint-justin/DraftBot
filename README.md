@@ -1,8 +1,8 @@
-# DraftBot
+# 🤖 DraftBot 🤖
 DraftBot is a simple bot for playing a game of Draft over Discord. DraftBot also has a bit of extra functionality built in for looking up different cards and/or some stats about them. 
 
 ## Commands
-### Draft
+### 🃏 Draft 🃏
 This command starts a new draft with the players who are mentioned in the command. The individual who runs the command will _always_ be included in the draft as the 1st player.
 
 #### Request [TODO]
@@ -14,7 +14,7 @@ For example, if player @Justin wanted to start a match against players @Nate and
 
 
 --- 
-### Scry
+### 🔮 Scry 🔮
 This command looks up any given existing Magic: The Gathering card documented in the scryfall API. It returns a single card of the exact card is found, or it returns a list of possible cards of multiple cards are returned from the search.
 
 `/scry <card-name>`
@@ -67,7 +67,7 @@ Run the package: `npm start`
 
 ---
 
-### This project is bootstrapped a few tutorials, linked below:
+### This project is bootstrapped from a few tutorials, check them out below:
 https://discordjs.guide/#before-you-begin
 
 https://sabe.io/tutorials/how-to-build-discord-bot-typescript#initialize-project
