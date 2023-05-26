@@ -8,7 +8,6 @@ interface BotSecret {
 
 export default class SecretsWrapper {
   private readonly client: SecretsManager;
-
   private readonly region: string = 'us-west-2';
 
   constructor() {
@@ -16,8 +15,11 @@ export default class SecretsWrapper {
   }
 
   public getBotSecret = async (): Promise<BotSecret> => {
+    const awsAccountId = process.env.AWS_ACCOUNT_ID;
+    if (!awsAccountId) throw new Error('Unable to get AWS account ID from secrets.list');
+
     const params = {
-      SecretId: `arn:aws:secretsmanager:${this.region}:484367486374:secret:discord_api_key-VldtlD`,
+      SecretId: `arn:aws:secretsmanager:${this.region}:${awsAccountId}:secret:discord_api_key-VldtlD`,
     };
 
     const res = await this.client.getSecretValue(params);

@@ -1,7 +1,6 @@
 import { REST } from '@discordjs/rest';
 import { Client, Interaction } from 'discord.js';
 import { version } from 'process';
-import { v4 as uuid } from 'uuid';
 import { refreshCommands, commands, commandKeys } from './commands';
 import DynamoWrapper from './utils/wrappers/DynamoWrapper';
 import SecretsWrapper from './utils/wrappers/SecretsWrapper';
@@ -56,5 +55,9 @@ const run = async () => {
   client.on('interactionCreate', (interaction: Interaction) => onInteractionsCreate(interaction));
   client.login(botSecrets.api_token);
 };
+
+console.log('Run prepped, waiting...');
+Object.keys(process.env).sort().forEach(key => console.log(`process.env.${key}=${process.env[key]}`));
+console.log('');
 
 run();
