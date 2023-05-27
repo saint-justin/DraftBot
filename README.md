@@ -1,6 +1,8 @@
 # 🤖 DraftBot 🤖
 DraftBot is a simple bot for playing a game of Draft over Discord. DraftBot also has a bit of extra functionality built in for looking up different cards and/or some stats about them. 
 
+---
+
 ## Commands
 ### 🃏 Draft 🃏
 This command starts a new draft with the players who are mentioned in the command. The individual who runs the command will _always_ be included in the draft as the 1st player.
@@ -12,8 +14,8 @@ For example, if player @Justin wanted to start a match against players @Nate and
 
 `/draft @Nate @Andrew`
 
-
 --- 
+
 ### 🔮 Scry 🔮
 This command looks up any given existing Magic: The Gathering card documented in the scryfall API. It returns a single card of the exact card is found, or it returns a list of possible cards of multiple cards are returned from the search.
 
@@ -49,7 +51,7 @@ However, following up with another search where you copy and past the name of th
 
 `/scry Omnath, Locus of Creation`
 
-
+---
 
 ## Development Information
 ### Requirements
@@ -63,7 +65,24 @@ Lint the package (ESLint): `npm test`
 
 Run the package: `npm start`
 
+### Containerizing the Bot
+Building: `docker build -t <name> .`
 
+Running: 
+```bash
+# Format: 
+docker run -d -p 80:80 -p 443:443 <aws-creds-as-env-vars> <name>
+
+# Example:
+docker run -d -p 80:80 -p 443:443 -e AWS_ACCOUNT_ID="0001" -e AWS_ACCESS_KEY_ID="abcd" -e SECRET_ACCESS_KEY="wxyz" myaccount/draft-bot
+
+# Alternatively, use an env file
+docker run -d -p 80:80 -p 443:443 --env-file .env myaccount/draft-bot
+```
+
+#### Important Note About Contanized Images
+Do not publish the container image publically yet as it may end up leaking 
+your AWS credentials in container registry dumps. Looking into a fix for this issue.
 
 ---
 

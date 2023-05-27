@@ -7,10 +7,7 @@
     "start": "ts-node src/main.ts",
     "build_sets": "ts-node src/database/Build/BuildSetData.ts",
     "pretest": "npx eslint ./src --fix --ext .js,.jsx,.ts,.tsx",
-    "test": "jest",
-    "docker_build": "docker build -t slothenly/draft-bot .",
-    "docker_run": "docker run -d -p 80:80 -p 443:443 --env-file .env slothenly/draft-bot",
-    "docker_start": "npm run docker_build && npm run docker_run"
+    "test": "jest"
   },
   "repository": {
     "type": "git",

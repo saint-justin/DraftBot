@@ -56,8 +56,6 @@ const run = async () => {
   client.login(botSecrets.api_token);
 };
 
-console.log('Run prepped, waiting...');
-Object.keys(process.env).sort().forEach(key => console.log(`process.env.${key}=${process.env[key]}`));
-console.log('');
+console.log('All functionality prepped, starting up... \n\n');
 
 run();
